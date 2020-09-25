@@ -29,12 +29,33 @@ map domain to nameservers
 2. Goto domain dashboard, go with custom DNS and enter digital ocean nameservers
 ```
 
-- server setup
+- server setup - create new user, disable root user
 ```bash
 apt update
 apt upgrade
-adduser $USERNAME
-usermod -aG sudo $USERNAME
-su $USERNAME
+adduser $USERNAME 
+usermod -aG sudo $USERNAME - to give root access to user
+su $USERNAME - to switch user
+
+cat /var/log/auth.log - to check the log of users
+tail -f /var/log/auth.log - to monitor the file output
+
+cd ~
+mkdir -p ~/.ssh
+vi ~/.ssh/authorized_keys
+
+and add your public ssh key there, it's important that you are adding as user and not as root
+
+exit
+exit
+
+ssh $USERNAME@IP_ADDRESS
+
+you should be logged in
+
+$ chmod 644 ~/.ssh/authorized_keys
+$ sudo vi /etc/ssh/sshd_config
+turn off permitRootLogin
+
+$ sudo service sshd restart
 ```
- 

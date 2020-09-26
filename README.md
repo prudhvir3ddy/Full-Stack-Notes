@@ -2,6 +2,7 @@
 # DigitalOcean Notes
 
 -  create ssh key and paste ssh public key in the dashboard 
+
  ```bash
 1. cd ~/.ssh and ssh-keygen
 key is created
@@ -21,35 +22,44 @@ connected.
 - Buying a domain
 - Map domain to IP
 ```
-1. Goto digital ocean dashboard and enter your domain in networking tab
+7. Goto digital ocean dashboard and enter your domain in networking tab
+
+note: 
+Maps name to IP address - A Record
+Maps name to name - CNAME 
+blog.prudhvi.me -> CNAME prudhvi.me
+prudhvi.me -> A ip_address
+
+ToDo: 
 create A record with www.domain to ip
 create A record with domain to ip
-map domain to nameservers
 
-2. Goto domain dashboard, go with custom DNS and enter digital ocean nameservers
+map domain to nameservers, example : ns1.digitalocean.com
+
+9. Goto domain dashboard, go with custom DNS and enter digital ocean nameservers
 ```
 
 - server setup - create new user, disable root user
 ```bash
-apt update
-apt upgrade
-adduser $USERNAME 
-usermod -aG sudo $USERNAME - to give root access to user
-su $USERNAME - to switch user
+# apt update
+# apt upgrade
+# adduser $USERNAME 
+# usermod -aG sudo $USERNAME - to give root access to user
+# su $USERNAME - to switch user
 
-cat /var/log/auth.log - to check the log of users
-tail -f /var/log/auth.log - to monitor the file output
+$ cat /var/log/auth.log - to check the log of users
+$ tail -f /var/log/auth.log - to monitor the file output
 
-cd ~
-mkdir -p ~/.ssh
-vi ~/.ssh/authorized_keys
+$ cd ~
+$ mkdir -p ~/.ssh
+$ vi ~/.ssh/authorized_keys
 
 and add your public ssh key there, it's important that you are adding as user and not as root
 
-exit
-exit
+$ exit
+$ exit
 
-ssh $USERNAME@IP_ADDRESS
+$ ssh $USERNAME@IP_ADDRESS
 
 you should be logged in
 
@@ -58,4 +68,13 @@ $ sudo vi /etc/ssh/sshd_config
 turn off permitRootLogin
 
 $ sudo service sshd restart
+```
+
+- nginx ( engine - x )
+```bash
+routes the requests to the right place
+$ sudo apt install nginx
+$ sudo service nginx start
+
+now goto your $IP_ADDRESS in browser you will see nginx page
 ```

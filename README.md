@@ -116,3 +116,64 @@ $ pm2 start app.js
 $ pm2 save
 $ pm2 startup
 ```
+- nginx redirect
+```
+location /help {
+return 301 https://developer.mozilla.org/en-US/;
+}
+```
+- nginx subdomain 
+```bash 
+TODO
+
+```
+
+- nginx file compression
+```bash
+vi /etc/nginx/nginx.conf
+
+find the Gzip settings in that file
+
+```
+
+- security
+
+```bash 
+$  sudo apt install unattended-upgrades
+$  cat /etc/apt/apt.conf.d/50unattended-upgrades 
+
+security checklist:
+	- ssh
+	- firewalls
+	- unattended-upgrades
+	- two factor authentication
+	- VPN
+
+nmap:
+$ sudo apt install nmap
+$ nmap YOUR_SERVER_IP_ADDRESS
+$ nmap -sV YOUR_SERVER_IP_ADDRESS
+
+try to close that you don't need, open port means it's exposed to internet and someone gonna find if any vulnerabilities show up
+
+$ less /etc/services - to see all the ports running
+
+Firewall :
+- iptables -p tcp --dport 80 -j REJECT
+- UFW (uncomplicated firewall) is easy tool to do firewall stuff
+
+$ sudo ufw status
+$ sudo ufw enable
+$ sudo ufw allow ssh
+
+test:
+try disabling http so we cannot see our homepage in browser
+
+$ sudo ufw reject http
+
+```
+
+- file permissions 
+```bash 
+TODO 
+```

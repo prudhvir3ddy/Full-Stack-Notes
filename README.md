@@ -177,3 +177,8 @@ $ sudo ufw reject http
 ```bash 
 TODO 
 ```
+
+- Adding https to digital ocean ubuntu server 
+```
+https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-20-04
+```

@@ -180,5 +180,17 @@ TODO
 
 - Adding https to digital ocean ubuntu server 
 ```
+
+use certbot
+route your traffic to https (domain name needed for sure)
 https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-20-04
+```
+
+- Adding http/2 to server
+```
+http2 needs https enabled
+
+$ sudo vi /etc/nginx/sites-available/default
+listen 443 http2 ssl;
+
 ```

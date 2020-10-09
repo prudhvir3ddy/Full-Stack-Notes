@@ -194,3 +194,24 @@ $ sudo vi /etc/nginx/sites-available/default
 listen 443 http2 ssl;
 
 ```
+
+- Installing redis 
+```
+$ sudo apt install redis-server
+$ sudo vi /etc/redis/redis.conf
+adding to system deamon when system restarts this will come online
+supervised systemd 
+$ sudo systemctl restart redis.service
+
+```
+
+- Websocket 
+```
+location / {
+   proxy_set_header Upgrade $http_upgrade;
+   proxy_set_header Connection "upgrade";
+
+   proxy_pass http://127.0.0.1:3000;
+}
+
+```

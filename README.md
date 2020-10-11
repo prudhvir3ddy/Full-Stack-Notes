@@ -122,11 +122,6 @@ location /help {
 return 301 https://developer.mozilla.org/en-US/;
 }
 ```
-- nginx subdomain 
-```bash 
-TODO
-
-```
 
 - nginx file compression
 ```bash
@@ -213,5 +208,39 @@ location / {
 
    proxy_pass http://127.0.0.1:3000;
 }
+
+```
+
+- nginx subdomain 
+```bash 
+create A record in digitalocean dashboard with subdomain.domain.com
+
+create folder in /var/www/subdomain.domain.com/ and keep your files there
+
+in nginx 
+
+create file in /etc/nginx/sites-available/subdomain.domain.com 
+
+and write config there 
+
+server {
+
+        root /var/www/html;
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name blog.prudhvireddy.me www.blog.prudhvireddy.me;
+
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}
+
+link two files 
+
+$ sudo ln -s /etc/nginx/sites-available/subdomain.domain.com /etc/nginx/sites-enabled/subdomain.domain.com 
+
+add it to https 
+
+sudo certbot --nginx -d blog.prudhvireddy.me -d www.prudhvireddy.me
 
 ```

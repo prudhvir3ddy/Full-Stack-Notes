@@ -13,9 +13,22 @@ fails - because we didn't mention which private key to use.
 $ ssh -i ~/.ssh/private_key root@IP_ADDRESS
 works but we don't have to do this everytime. 
 $ vi ~/.ssh/config
-Host * 
-	AddKeysToAgent yes
-	UseKeyChain yes
+```
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+```
+# if you encounter any issue something like below
+#    /home/fz/.ssh/config: line 3: Bad configuration option: usekeychain
+#    /home/fz/.ssh/config: terminating, 1 bad configuration options
+# then update the config as follows
+```
+Host *
+  IgnoreUnknown AddKeysToAgent,UseKeychain
+  AddKeysToAgent yes
+  UseKeychain yes
+```
+
 $ ssh-add -K ~/.ssh/fsfe
 key got added to the chain now you can do
 $ ssh root@IP_ADDRESS

@@ -12,7 +12,7 @@ $ ssh root@IP_ADDRESS
 fails - because we didn't mention which private key to use.
 $ ssh -i ~/.ssh/private_key root@IP_ADDRESS
 works but we don't have to do this everytime. 
-$ vi ~.ssh/config
+$ vi ~/.ssh/config
 Host * 
 	AddKeysToAgent yes
 	UseKeyChain yes

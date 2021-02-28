@@ -1,141 +1,23 @@
+# Cloud hosting Notes
 
-# DigitalOcean Notes
+This short blog will provide you each detail to get started with cloud hosting that preferably works fine with most of the **Ubuntu** server providers out there in the market. The commands written in this would work absolutely fine with Linux/Mac.
 
-https://docs.google.com/presentation/d/1Mvf_rOFz1wZeH1irajJqhRQgzid7BkqJBd8wigpz39M/edit#slide=id.g616bd81ef8_0_58
-Thanks to Jem Young from frontend masters
+> Thanks to [**Jem Young**](https://docs.google.com/presentation/d/1Mvf_rOFz1wZeH1irajJqhRQgzid7BkqJBd8wigpz39M/edit#slide=id.g616bd81ef8_0_58), Frontend masters
 
--  create ssh key in your local system and paste ssh public key in the dashboard 
- ```bash
-$ cd ~/.ssh and ssh-keygen
-$ key is created
-$ ssh root@IP_ADDRESS
-fails - because we didn't mention which private key to use.
-$ ssh -i ~/.ssh/private_key root@IP_ADDRESS
-works but we don't have to do this everytime. 
-$ vi ~.ssh/config
-Host * 
-	AddKeysToAgent yes
-	UseKeyChain yes
-$ ssh-add -K ~/.ssh/fsfe
-key got added to the chain now you can do
-$ ssh root@IP_ADDRESS
-connected.
-```
-- Buying a domain
-- Map domain to IP
-```
-7. Goto digital ocean dashboard and enter your domain in networking tab
+## Contents
 
-note: 
-Maps name to IP address - A Record
-Maps name to name - CNAME 
-blog.prudhvi.me -> CNAME prudhvi.me
-prudhvi.me -> A ip_address
-
-ToDo: 
-create A record with www.domain to ip
-create A record with domain to ip
-
-map domain to nameservers, example : ns1.digitalocean.com
-
-9. Goto domain dashboard, go with custom DNS and enter digital ocean nameservers
-```
-
-- server setup - create new user, disable root user
-```bash
-# apt update
-# apt upgrade
-# adduser $USERNAME 
-# usermod -aG sudo $USERNAME - to give root access to user
-# su $USERNAME - to switch user
-
-$ cat /var/log/auth.log - to check the log of users
-$ tail -f /var/log/auth.log - to monitor the file output
-
-$ cd ~
-$ mkdir -p ~/.ssh
-$ vi ~/.ssh/authorized_keys
-
-and add your public ssh key there, it's important that you are adding as user and not as root
-
-$ exit - to exit from user
-$ exit = to exit from root
-
-$ ssh $USERNAME@IP_ADDRESS
-
-you should be logged in
-
-$ chmod 644 ~/.ssh/authorized_keys
-$ sudo vi /etc/ssh/sshd_config
-turn off permitRootLogin
-
-$ sudo service sshd restart
-```
-
-- nginx ( engine - x ) -web server
-```bash
-routes the requests to the right place
-$ sudo apt install nginx
-$ sudo service nginx start
-
-now goto your $IP_ADDRESS in browser you will see nginx page
-
-nginx configuration
-$ sudo less /etc/nginx/sites-available/default
-```
-- Node.js  - Application server
-```bash 
-$ sudo apt install nodejs npm
-$ sudo apt install git
-```
-- Application 
-```bash 
-$ sudo chown -R $USER:$USER /var/www
-$ mkdir /var/www/app
-$ cd /var/www/app && git init
-
-$ mkdir -p ui/js ui/html ui/css
-$ touch app.js
-$ npm init
-
-build the node basic app and $IP_ADDRESS:3000 should give the response
-
-but we want entering $IP_ADDRESSS in browser should show the application response
-
-$ sudo vi /etc/nginx/sites-available/default
-location / {
-	proxy_pass http://127.0.0.1:3000/;
-}
-```
-- what about when we restart server ? we want services to be run back again.
-
-```bash
-process managers
-$ sudo npm i -g pm2
-$ pm2 start app.js
-$ pm2 save
-$ pm2 startup
-```
-- nginx redirect
-```
-location /help {
-return 301 https://developer.mozilla.org/en-US/;
-}
-```
-
-- nginx file compression
-```bash
-vi /etc/nginx/nginx.conf
-
-find the Gzip settings in that file
-
-```
+1. [Creating and storing SSH Keys](ssh_config.md)
+2. [Buying a domain and mapping it to our server](domain_mapping.md)
+3. [Server setup](server_setup.md)
+4. [MongoDB setup](mongo_setup.md)
+5. [Nginx setup](nginx_setup.md)
+6. [Redis setup](redis_setup.md)
 
 - security
 
-```bash 
+```bash
 $  sudo apt install unattended-upgrades
-$  cat /etc/apt/apt.conf.d/50unattended-upgrades 
+$  cat /etc/apt/apt.conf.d/50unattended-upgrades
 
 security checklist:
 	- ssh
@@ -168,12 +50,14 @@ $ sudo ufw reject http
 
 ```
 
-- file permissions 
-```bash 
-TODO 
+- file permissions
+
+```bash
+TODO
 ```
 
-- Adding https to digital ocean ubuntu server 
+- Adding https to digital ocean ubuntu server
+
 ```
 
 use certbot
@@ -182,6 +66,7 @@ https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-
 ```
 
 - Adding http/2 to server
+
 ```
 http2 needs https enabled
 
@@ -190,17 +75,8 @@ listen 443 http2 ssl;
 
 ```
 
-- Installing redis 
-```
-$ sudo apt install redis-server
-$ sudo vi /etc/redis/redis.conf
-adding to system deamon when system restarts this will come online
-supervised systemd 
-$ sudo systemctl restart redis.service
+- Websocket
 
-```
-
-- Websocket 
 ```
 location / {
    proxy_set_header Upgrade $http_upgrade;
@@ -211,17 +87,18 @@ location / {
 
 ```
 
-- nginx subdomain 
-```bash 
+- nginx subdomain
+
+```bash
 create A record in digitalocean dashboard with subdomain.domain.com
 
 create folder in /var/www/subdomain.domain.com/ and keep your files there
 
-in nginx 
+in nginx
 
-create file in /etc/nginx/sites-available/subdomain.domain.com 
+create file in /etc/nginx/sites-available/subdomain.domain.com
 
-and write config there 
+and write config there
 
 server {
 
@@ -235,11 +112,11 @@ server {
         }
 }
 
-link two files 
+link two files
 
-$ sudo ln -s /etc/nginx/sites-available/subdomain.domain.com /etc/nginx/sites-enabled/subdomain.domain.com 
+$ sudo ln -s /etc/nginx/sites-available/subdomain.domain.com /etc/nginx/sites-enabled/subdomain.domain.com
 
-add it to https 
+add it to https
 
 sudo certbot --nginx -d blog.prudhvireddy.me -d www.prudhvireddy.me
 
